@@ -1,4 +1,3 @@
-//SIMULADOR//
 //VARIABLES//
 let gananciaTotal
 let cantidadProducto
@@ -20,13 +19,13 @@ let teclado_especial
 let parse
 let total
 let array_producto= [];
-let almacenador_string
+let objeto_string
 let resultado
 let string_resultado
 let parse_ganancia
 let jsonparse
 
-//---VALIDACION CON RESPECTO AL FORMULARIO//
+//---VALIDACION CON RESPECTO AL FORMULARIO (USANDO JQUERY)//
 $(document).ready(function(){
 
     let miFormulario = $("#formulario");
@@ -49,19 +48,78 @@ $(document).ready(function(){
     })
 })
 
-
 //VERIFICO QUE MIS INPUTS REQUIRED ESTEN COMPLETADOS PARA PODER CREAR MI OBJETO-PRODUCTO//
 let length = document.getElementById("formulario").querySelectorAll("[required]").length
+console.log(length)
+
 function validarFormulario_dos(){
     for (let i = 0; i < length ; i++){
         let element = document.getElementById("formulario").querySelectorAll("[required]")[i]
-        
-        if (element.value == null || element.value.length == 0 ) {
+    
+        if (element.value == null || element.value.length == 0) {
             return false
-        } 
+        }
     }
-    return true
+    return true   
 }
+
+//VALIDACION DE MIS BUTTON RADIO//
+let lenght_radio= document.getElementsByName("packaging").length
+console.log(lenght_radio)
+
+let lenght_transp = document.getElementsByName("transporte").length
+console.log(lenght_transp)
+
+function validarRadios(){
+    for(let i=0; i< (lenght_radio && lenght_transp); i++){
+        let elementRadio= document.getElementsByName("packaging")[i]
+        let elementTransp = document.getElementsByName("transporte")[i]
+        costoPackaging=document.getElementById("costoPackaging").value[i]
+        costoTransporte=document.getElementById("costoTransporte").value[i]
+
+        if((elementRadio.checked && costoPackaging==null) && (elementTransp.checked && costoTransporte==null)){
+            showModal("ERROR AL CARGAR EN LA TABLA", "Por favor ingrese gasto de packaging y transporte. Vuelva a intentarlo")
+            return false
+        }
+        if(elementRadio.checked && costoPackaging==null){
+            showModal("ERROR AL CARGAR EN LA TABLA", "Por favor ingrese gasto del packaging. Vuelva a intentarlo")
+            return false
+        }
+        if(elementTransp.checked && costoTransporte==null){
+            showModal("ERROR AL CARGAR EN LA TABLA", "Por favor ingrese gasto de transporte. Vuelva a intentarlo")
+            return false
+        }
+        return true
+    }
+}
+//CREANDO MODAL(CON BOOTSTRAP) AL NO COMPLETAR EN EL CASO DE "SI"(PACKAGING O TRANSPORTE) EL COSTO//
+var modalWrap= null;
+const showModal=(a,b) => {
+    if(modalWrap !==null){
+        modalWrap.remove()
+    }
+    modalWrap = document.createElement('div');
+    modalWrap.innerHTML=`<div class="modal fade" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">              
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">${a}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>${b}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> `;
+    document.body.append(modalWrap);
+    var modal = new bootstrap.Modal(modalWrap.querySelector('.modal'))
+    modal.show();
+}
+
 function eventoSlideUp(){
     $("#costoPackaging").slideUp("slow")
     $("#costoTransporte").slideUp("slow")
@@ -130,10 +188,10 @@ function datosUsuario(){
     noPackaging= $("#noPackaging").is(":checked")
     noTransporte = $("#noTransporte").is(":checked")
     siTransporte= $("#siTransporte").is(":checked")
-
+   
     //VERIFICACION DEL RADIO BUTTON, PARA TOMAR EL VALOR DEL INPUT //
     if(siPackaging && siTransporte){
-
+        
         gananciaTotal = precioProducto - costoPackaging - costoTransporte - materiales -manoDeObra
 
     }else if(siPackaging && noTransporte){
@@ -184,21 +242,21 @@ class Producto{
     }
 } 
 
-//BOTON AGREGAR PRODUCTO//
+//BOTON AGREGAR PRODUCTO (UTILIZANDO JQUERY)//
 $(document).ready(function(){
     
     $("#calcular").on("click", calculo);
 
     function calculo(){
         //SI EN LOS INPUTS REQUIRED ESTAN COMPLETADOS(TRUE), SE ARMAN LOS OBJETOS//
-        if(validarFormulario_dos()){
+        if(validarFormulario_dos() && validarRadios()){
             $(".boton-arriba").slideDown("slow")
             //VERIFICO SI EN MI STORAGE TENGO DATOS GUARDADOS, Y SI ES ASI, LOS OBTENGO// 
             if(sessionStorage.getItem("objeto") && sessionStorage.getItem("ganancia")){
                 //OBTENGO LA INFORMACION GUARDADA EN MI STORAGE//
                 jsonparse= JSON.parse(sessionStorage.getItem("objeto"))
 
-                //FUNCION OBJETOS()//
+                //LLAMO A MI FUNCION OBJETOS()//
                 objetos(jsonparse)
                
             }else{
@@ -239,8 +297,8 @@ function objetos(array_producto){
 //ALMACENO EL ARRAY DE OBJETO AL STORAGE//
 function storage_productos(array_producto){
     //CADA OBJETO SE GUARDA EN EL STORAGE//
-    almacenador_string = JSON.stringify(array_producto);
-    sessionStorage.setItem("objeto", almacenador_string);
+    objeto_string = JSON.stringify(array_producto);
+    sessionStorage.setItem("objeto", objeto_string);
 
     resultado=0
     parse = JSON.parse(sessionStorage.getItem("objeto"))
@@ -297,8 +355,8 @@ function eliminar_producto(elemento){
     resultado = document.getElementById("total").innerHTML =  document.getElementById("total").innerHTML - elemento.parentElement.parentElement.getElementsByTagName("td")[8].innerHTML;
 
     //VUELVO A GUARDAR EL OBJETO EN EL STORAGE//
-    almacenador_string = JSON.stringify(jsonparse);
-    sessionStorage.setItem("objeto", almacenador_string)
+    objeto_string = JSON.stringify(jsonparse);
+    sessionStorage.setItem("objeto", objeto_string)
 
     //GUARDO EL NUEVO RESULTADO AL STORAGE//
     string_resultado= JSON.stringify(resultado);
@@ -350,17 +408,26 @@ $(document).ready(function(){
                                 "color": "black"})
     })
     
-    $('#tablaObjetos').on('click',()=>{
+    $("#tablaObjetos").on('click',()=>{
         $('#tabla').fadeToggle()
     })
-    
+    $("#tituloInformacion").mouseover(function(){
+
+        $(this).css({"background-color": "#252323",
+                       "color": "#ffbd59"})
+    })
+    $("#tituloInformacion").mouseout(function(){
+
+        $(this).css({"background-color": "rgb(238, 231, 222)",
+                       "color": "black"})
+    })
 });
 
 
 
 //UTILIZACION DE AJAX CON JQUERY//
 const url= "https://v6.exchangerate-api.com/v6/1b1ab0b22f79ba1b0820c0a2/latest/ARS"
-const urlpaises= "./scriptjson.json"
+const urlpaises= "./script10.json"
 
 $(document).ready(function(){
     $("#divisas").click(() =>{

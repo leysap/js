@@ -23,6 +23,14 @@ header{
     opacity: 0.5;
     transition: all 1s ;
 }
+#enlaceQuienes{
+    text-decoration: none;
+    color: #ffbd59;
+}
+#enlaceQuienes:hover{
+    opacity: 0.5;
+    transition: all 1s;
+}
 h1{
     padding: 0.2em;
     background-color: rgb(238, 231, 222);
@@ -43,7 +51,6 @@ h1{
 }
 .divs-inputs{
     margin: 1em;
-
 }
 .div_radio{
     text-align: center;
@@ -54,7 +61,6 @@ h1{
     border-left: 1px solid black;
     padding: 0.2em;
 }
-
 .flexcontent{
     display: flex;
     justify-content: space-around;
@@ -143,6 +149,35 @@ tr, th{
 ul{
     text-decoration: circle;
 }
+
+#quienesSomos{
+    margin-top: 1em;
+    margin-bottom: 2em;
+    background-color: #ffbd59;
+    padding: 0.5em;
+    border-radius: 1em;
+    border: 2px solid white;
+}
+#quienesSomos h5{
+    text-align: center;
+    font-weight: bold;
+
+}
+#quienesSomos h3{
+    padding: 0.5em;
+    font-weight: bold;
+    border-radius: 1em;
+    background-color: rgb(238, 231, 222);
+}
+#quienesSomos img{
+    padding: 0.5em;
+    border-radius: 1em;
+}
+#quienesSomos img:hover{
+    opacity: 0.9;
+    transition: all 1s;
+
+}
 footer{
     background-color:#252323;
     padding: 1em;
@@ -154,4 +189,19 @@ footer{
 h5{
     margin-left: 1em;
     margin-right: 1em;
+}
+
+@media (max-width:767px){
+    .divPackTransp{
+        border-right: none;
+        border-left: none;
+        padding: 0.2em;
+    }
+}
+@media (min-width:768px) and (max-width:991px){
+    .divPackTransp{
+        border-left: 1px solid black;
+        border-right: none;
+        padding: 0.2em;
+    }
 }
