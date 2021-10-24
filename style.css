@@ -157,6 +157,7 @@ ul{
     padding: 0.5em;
     border-radius: 1em;
     border: 2px solid white;
+    display: none;
 }
 #quienesSomos h5{
     text-align: center;

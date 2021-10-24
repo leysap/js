@@ -421,13 +421,19 @@ $(document).ready(function(){
         $(this).css({"background-color": "rgb(238, 231, 222)",
                        "color": "black"})
     })
+    $("#enlaceQuienes").on("click", function(){
+
+        $("#quienesSomos").fadeIn(1500)
+
+
+    })
 });
 
 
 
 //UTILIZACION DE AJAX CON JQUERY//
 const url= "https://v6.exchangerate-api.com/v6/1b1ab0b22f79ba1b0820c0a2/latest/ARS"
-const urlpaises= "./script10.json"
+const urlpaises= "./scriptjson.json"
 
 $(document).ready(function(){
     $("#divisas").click(() =>{
