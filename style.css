@@ -3,9 +3,18 @@ body, label{
     font-family: 'Yaldevi', sans-serif;
 
 }
+
+main{
+    background-color: gray;
+}
+
+body{
+    background-color: gray;
+}
 header{
     background-color: #252323
 }
+
 .logo{
     width:70px;
     margin-left:1em ;
